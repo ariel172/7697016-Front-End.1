@@ -22,7 +22,7 @@
         "nom": "Ampoule boîte à gants",
         "prix": 5.49,
         "categorie": "Optiques",
-        "image": "images/ampoule-led.png",
+        "image": "images/ampoule-boite-a-gants.png",
         "description": "Pour y voir clair dans l’habitacle",
         "disponibilite": false
     },
@@ -31,7 +31,7 @@
         "nom": "Liquide de frein",
         "prix": 9.60,
         "categorie": "Freinage",
-        "image": "images/plaquettes-frein.png",
+        "image": "images/liquide-frein.png",
         "disponibilite": true
     },
     {
