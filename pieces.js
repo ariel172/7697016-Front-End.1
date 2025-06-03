@@ -141,3 +141,13 @@ for (let i = 0; i < disponibiliteNoms.length; i++) {
 // Ajouter la liste dans le DOM
 const piecesDisponible = document.querySelector(".piecesDisponible");
 piecesDisponible.appendChild(baliseDisponible).appendChild(disponible);
+
+//input de type range prix maximum pour filtrer les pièces
+  const inputPrix = document.getElementById("input-prix");
+  const valeurPrix = document.getElementById("valeur-prix");
+  inputPrix.addEventListener('input', () =>{
+    const resutatFiltre = pieces.filter(p => p.prix <= inputPrix.value);
+    valeurPrix.innerText = inputPrix.value;
+    document.querySelector(".fiches").innerHTML = "";
+    regenerPieces(resutatFiltre);
+  });
