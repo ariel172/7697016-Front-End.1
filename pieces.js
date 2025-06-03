@@ -75,3 +75,56 @@ boutonOrdreDecroissant.addEventListener("click", () =>{
     })
     console.log(piecesDecroissantes)
 })
+
+//Créer un nouveau tableau 'nom' basé sur l’ancien.
+const nomsPieces = pieces.map(pieces => pieces.nom)
+
+//Ajoutez et supprimez les éléments d’une liste
+for(let i = pieces.length - 1; i >= 0; i--){
+    if(pieces[i].prix > 35){
+        nomsPieces.splice(i, 1);
+    }
+}
+console.log(nomsPieces);
+
+//Affichez la liste des pièces abordables
+const abordables = document.createElement("ul")
+
+//Ajout de chaque nom à la liste
+for(let i = 0; i < nomsPieces.length; i++){
+    const nomElement = document.createElement("li");
+    nomElement.innerText = nomsPieces[i];
+    //Ajout de chaque nom à la liste abordables
+    abordables.appendChild(nomElement)
+}
+
+//Ajout de la liste abordables à la section fiches
+const produitAbordables = document.querySelector(".produitAbordables")
+produitAbordables.appendChild(abordables);
+
+
+// Extraire les noms et les prix de toutes les pièces
+const disponibiliteNoms = pieces.map(p => p.nom);
+const disponibilitePrix = pieces.map(p => p.prix);
+
+// Supprimer les éléments non disponibles (en partant de la fin)
+for (let i = pieces.length - 1; i >= 0; i--) {
+    if (pieces[i].disponibilite === false) {
+        disponibiliteNoms.splice(i, 1);
+        disponibilitePrix.splice(i, 1);
+    }
+}
+
+// Créer une <ul> pour afficher la liste
+const disponible = document.createElement("ul");
+
+// Ajouter chaque pièce disponible à la liste
+for (let i = 0; i < disponibiliteNoms.length; i++) {
+    const nomElementDisponible = document.createElement("li");
+    nomElementDisponible.innerText = `${disponibiliteNoms[i]} – ${disponibilitePrix[i]} €`;
+    disponible.appendChild(nomElementDisponible);
+}
+
+// Ajouter la liste dans le DOM
+const piecesDisponible = document.querySelector(".piecesDisponible");
+piecesDisponible.appendChild(disponible);
