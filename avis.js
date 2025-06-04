@@ -13,20 +13,28 @@ export function ajoutListenersAvis() {
             const reponse = await fetch("http://localhost:8081/pieces/" + id + "/avis");
             // Convertit la réponse en JSON (tableau d'avis)
             const avis = await reponse.json();
+            // Convertit le tableau d'avis en chaîne de caractères au format JSON
+            const valeurAvis = JSON.stringify(avis);
+            // Stocke les avis dans le localStorage avec une clé spécifique
+            window.localStorage.setItem(`avis-piece-${id}`, valeurAvis);
             // Récupère l'élément parent du bouton (l'article de la pièce)
             const pieceElement = event.target.parentElement;
-
-            // Crée un nouvel élément <p> pour afficher les avis
-            const avisElement = document.createElement("p");
-            // Parcourt tous les avis reçus
-            for (let i = 0; i < avis.length; i++) {
-                // Ajoute chaque avis dans le paragraphe, avec l'utilisateur et le commentaire
-                avisElement.innerHTML += `<br>${avis[i].utilisateur}:</br> ${avis[i].commentaire} <br>`;
-            }
-            // Ajoute le paragraphe contenant les avis à l'article de la pièce
-            pieceElement.appendChild(avisElement)
+            afficherAvis(pieceElement,avis)
         });
     }
+}
+
+// Fonction pour afficher les avis d'une pièce
+export function afficherAvis(pieceElement,avis){
+  // Crée un nouvel élément <p> pour afficher les avis
+  const avisElement = document.createElement("p");
+  // Parcourt tous les avis reçus
+  for (let i = 0; i < avis.length; i++) {
+  // Ajoute chaque avis dans le paragraphe, avec l'utilisateur et le commentaire
+    avisElement.innerHTML += `<br>${avis[i].utilisateur}:</br> ${avis[i].commentaire} <br>`;
+  }
+  // Ajoute le paragraphe contenant les avis à l'article de la pièce
+  pieceElement.appendChild(avisElement)
 }
 
 //Fonction pour envoyer avis

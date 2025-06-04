@@ -1,8 +1,20 @@
-import { ajoutListenersAvis,ajoutListenerEnvoyerAvis } from "./avis.js";
-// Récupération des pièces depuis l' API
-const reponse = await fetch(' http://localhost:8081/pieces');
-//Récuperer les éléments du json
-const pieces = await reponse.json();
+import { ajoutListenersAvis,ajoutListenerEnvoyerAvis,afficherAvis } from "./avis.js";
+// Récupération des pièces éventuellement stockées dans le localStorage
+let pieces = window.localStorage.getItem("pieces");
+if(pieces === null){
+    // Récupération des pièces depuis l' API
+    const reponse = await fetch(' http://localhost:8081/pieces');
+    //Récuperer les éléments du json
+    const pieces = await reponse.json();
+    // convertir pièces en format JSON
+    const valeurPieces = JSON.stringify(pieces)
+    //Stocage dans le localStorage
+    window.localStorage.setItem("pieces", valeurPieces);
+}else{
+    //convertir en objet JS
+    // Si les pièces sont déjà stockées, on les parse pour les utiliser
+    pieces = JSON.parse(pieces);
+}
 
 // on appelle la fonction pour ajouter le listener au formulaire
 ajoutListenerEnvoyerAvis()
@@ -48,6 +60,18 @@ function regenerPieces(pieces){
     ajoutListenersAvis()
 }
 regenerPieces(pieces)
+
+//boucle pour afficher les avis des pièces
+for(let i = 0 ; i < pieces.length; i++){
+    const id = pieces[i].id
+    const avisJSON = window.localStorage.getItem(`avis-piece-${id}`);
+    const avis = JSON.parse(avisJSON);
+    if(avis !== null){
+        // Si des avis sont stockés pour cette pièce, on les affiche
+        const pieceElement = document.querySelector(`article button[data-id="${id}"]`).parentElement;
+        afficherAvis(pieceElement, avis);
+    }
+}
 
 const boutonTrier = document.querySelector(".btn-trier");
 //Gestion de l'évènement click sur le bouton trier
@@ -102,7 +126,6 @@ for(let i = pieces.length - 1; i >= 0; i--){
         nomsPieces.splice(i, 1);
     }
 }
-console.log(nomsPieces);
 
 //Création de l'en-têt
 const baliseAbordable = document.createElement("p");
@@ -161,3 +184,9 @@ piecesDisponible.appendChild(baliseDisponible).appendChild(disponible);
     document.querySelector(".fiches").innerHTML = "";
     regenerPieces(resutatFiltre);
   });
+
+  // Ajout du listener pour mettre à jour des données du localStorage
+const boutonMettreAJour = document.querySelector(".btn-maj");
+boutonMettreAJour.addEventListener("click", function () {
+  window.localStorage.removeItem("pieces");
+});
