@@ -1,3 +1,4 @@
+import { ajoutListenersAvis } from "./avis.js";
 // Récupération des pièces depuis le fichier JSON
 const reponse = await fetch('pieces-autos.json');
 //Récuperer les éléments du json
@@ -29,13 +30,19 @@ function regenerPieces(pieces){
         descriptionElement.innerText = pieces[i].description ?? "(Pas de description pour le moment)";
         //opérateur ternaire
         dispoibiliteElement.innerText = `${pieces[i].disponibilite === true ? "En stock" : "Rupture de stock"}`;
+        //Ajout du bouton pour les avis
+        const avisBouton = document.createElement("button");
+        avisBouton.dataset.id = pieces[i].id
+        avisBouton.textContent = "Afficher les avis";
         sectionFiches.appendChild(pieceElement);
         pieceElement.appendChild(imgElement);
         pieceElement.appendChild(nomElement);
         pieceElement.appendChild(prixElement);
         pieceElement.appendChild(categorieElement);
         pieceElement.appendChild(dispoibiliteElement);
+        pieceElement.appendChild(avisBouton);
     }
+    ajoutListenersAvis()
 }
 regenerPieces(pieces)
 
