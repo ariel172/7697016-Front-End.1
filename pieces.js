@@ -1,8 +1,11 @@
-import { ajoutListenersAvis } from "./avis.js";
-// Récupération des pièces depuis le fichier JSON
+import { ajoutListenersAvis,ajoutListenerEnvoyerAvis } from "./avis.js";
+// Récupération des pièces depuis l' API
 const reponse = await fetch(' http://localhost:8081/pieces');
 //Récuperer les éléments du json
 const pieces = await reponse.json();
+
+// on appelle la fonction pour ajouter le listener au formulaire
+ajoutListenerEnvoyerAvis()
 
 function regenerPieces(pieces){
     for(let i = 0 ; i < pieces.length; i++) {
