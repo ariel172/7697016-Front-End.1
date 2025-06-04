@@ -28,3 +28,28 @@ export function ajoutListenersAvis() {
         });
     }
 }
+
+//Fonction pour envoyer avis
+export function ajoutListenerEnvoyerAvis(){
+    const formulaireAvis = document.querySelector(".formulaire-avis");
+    // Ajoute un écouteur d'événement 'submit' sur le formulaire d'avis
+    formulaireAvis.addEventListener("submit", function (event){
+      event.preventDefault(); // Empêche le rechargement de la page
+
+    // Création de l’objet du nouvel avis.
+    const avis = {
+      pieceId : parseInt(event.target.querySelector("[name=piece-id]").value),
+      utilisateur : event.target.querySelector("[name=utilisateur]").value,
+      commentaire : event.target.querySelector("[name=commentaire]").value
+    }
+    //converton de l'objet avis en chaîne au format JSON
+    const chargeUtile = JSON.stringify(avis)
+
+    // Appel de la fonction fetch avec toutes les informations nécessaires
+    fetch("http://localhost:8081/avis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: chargeUtile
+    });
+    })
+}
